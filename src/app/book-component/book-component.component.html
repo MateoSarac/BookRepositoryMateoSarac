@@ -1,0 +1,81 @@
+<button type="button" class="btn btn-primary" (click)="prikazSlike()">
+  Prikazi/sakrij slike
+</button>
+<button type="button" class="btn btn-secondary" (click)="FormatirajCijenu()">
+  Formatiraj cijenu
+</button>
+<button type="button" class="btn btn-danger" (click)="FormatirajDatum()">
+  Formatiraj datum
+</button>
+<button type="button" class="btn btn-success" (click)="FormatirajJezik()">
+  Formatiraj jezik
+</button>
+<button type="button" class="btn btn-warning" (click)="FormatirajStranice()">
+  Formatiraj stranice
+</button>
+
+<div>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Naziv</th>
+        <th scope="col">Autor</th>
+        <th scope="col">Zanr</th>
+        <th scope="col">Opis</th>
+        <th scope="col" *ngIf="showImage">Slika</th>
+        <th scope="col">Cijena</th>
+        <th scope="col">Datum</th>
+        <th scope="col">Jezik</th>
+        <th scope="col">Broj stranica</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let book of books">
+        <th scope="row">{{ book.id }}</th>
+        <td>{{ book.naziv }}</td>
+        <td>{{ book.autor }}</td>
+        <td>{{ book.zanr }}</td>
+        <td>
+          <span *ngIf="book.prikazOpisa">{{ book.opis }}</span
+          ><button (click)="toggleOpis(book.id)">Prikazi/Sakrij Opis</button>
+        </td>
+        <td *ngIf="showImage">
+          <img *ngIf="book.slika" [src]="book.slika" />
+          <img
+            *ngIf="!book.slika"
+            src="assets/img/imgg.jpg"
+            [style.width.px]="200"
+          />
+        </td>
+        <td *ngIf="formatPrice">
+          {{ book.cijena | currency : "EUR" : "symbol-narrow" : "1.2-2" }}
+        </td>
+        <td *ngIf="!formatPrice">
+          {{ book.cijena }}
+        </td>
+        <td *ngIf="formatDate">{{ book.datumIzdavanja | date : "yyyy" }}</td>
+        <td *ngIf="!formatDate">{{ book.datumIzdavanja }}</td>
+        <td *ngIf="formatJezik">{{ book.jezik | uppercase }}</td>
+        <td *ngIf="!formatJezik">{{ book.jezik }}</td>
+        <td
+          *ngIf="book.brojStranica > 200 && formatPage"
+          class="backgroundOrange"
+        >
+          {{ book.brojStranica }}
+        </td>
+        <td
+          *ngIf="
+            book.brojStranica > 100 && book.brojStranica < 200 && formatPage
+          "
+          class="backgroundBlue"
+        >
+          {{ book.brojStranica }}
+        </td>
+        <td *ngIf="!formatPage">
+          {{ book.brojStranica }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
